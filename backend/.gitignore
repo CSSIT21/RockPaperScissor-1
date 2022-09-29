@@ -1,5 +1,6 @@
 # Local
 /local
+/config.yaml
 
 # Editor directories and files
 .vscode/*
