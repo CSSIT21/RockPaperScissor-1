@@ -6,13 +6,16 @@ const NameField = () => {
 	return (
 		<Paper
 			sx={{
-				width: '368px',
+				width: '870px',
 				maxWidth: 'calc(100% - 54px - 48px)',
-				height: '72px',
+				height: '100px',
 				borderRadius: '36px',
 				padding: '0 18px 0 36px',
 				display: 'flex',
 				alignItems: 'center',
+				marginX: '100px',
+				borderColor: '#000000',
+                border: 'solid'
 			}}
 			elevation={3}
 		>
