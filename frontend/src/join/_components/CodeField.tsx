@@ -2,7 +2,7 @@ import { IconButton, Paper, TextField } from '@mui/material'
 import React from 'react'
 import { FaChevronRight } from 'react-icons/all'
 
-const NameField = () => {
+const CodeField = () => {
 	return (
 		<Paper
 			sx={{
@@ -13,15 +13,16 @@ const NameField = () => {
 				padding: '0 20px 0 20px',
 				display: 'flex',
 				alignItems: 'center',
-				marginX: '100px',
+				marginX: '155px',
+				marginY: '50px',
 				borderColor: '#000000',
                 border: 'solid'
 			}}
 			elevation={3}
 		>
-			<TextField variant="standard" label="Enter your name" sx={{ flex: 1 }}></TextField>
+			<TextField variant="standard" label="Code room" sx={{ flex: 1 }}></TextField>
 		</Paper>
 	)
 }
 
-export default NameField
+export default CodeField

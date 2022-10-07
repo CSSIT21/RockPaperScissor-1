@@ -11,9 +11,6 @@ const Home = () => {
 			<LogoCard />
 			<NameField />
 			<Box textAlign='center' margin='5%'><StartButton> Start </StartButton></Box>
-			<div className={styles.getStarted}>
-
-			</div>
 		</div>
 	)
 }
