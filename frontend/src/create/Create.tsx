@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Card } from '@mui/material'
+import { Box, Card, Typography } from '@mui/material'
 
 import styles from './Create.module.scss'
 import Button from './_components/Button'
@@ -15,22 +15,30 @@ const Create = () => {
 					display: 'flex',
 					alignItems: 'center',
 					marginY: '20%',
-					marginX: '-10%',
+					marginX: '0%',
 					borderColor: '#000000',
 					border: 'solid',
 					textAlign: 'center',
 				}}
 			>
-				Room code : 8X7DF
+				<Typography
+                        sx={{
+                            textTransform: 'uppercase',
+                            fontWeight: 'bold',
+                            fontSize: '20px',
+                            align: 'left'
+                        }}>
+                        Room code : 8X7DF
+                    </Typography>
 			</Card>
 			<Box sx={{
-					width: '350%',
+					width: '300%',
 					height: '200%',
 					borderRadius: '36px',
 					padding: '0 18px 0 36px',
 					display: 'flex',
-					marginTop: '-50%',
-					marginX: '-130%',
+					marginTop: '-40%',
+					marginX: '-100%',
 					backgroundColor: 'white',
 					borderColor: '#000000',
 					border: 'solid',
@@ -48,8 +56,16 @@ const Create = () => {
 						border: 'solid',
 						textAlign: 'center',
 					}}
-				>
-					Player1
+				><Typography
+				sx={{
+					textTransform: 'uppercase',
+					fontWeight: 'bold',
+					fontSize: '20px',
+					align: 'left'
+				}}>
+				Player1
+			</Typography>
+					
 				</Card>
 				<Box
         component="img"
@@ -75,21 +91,28 @@ const Create = () => {
 						border: 'solid',
 						textAlign: 'center',
 					}}
-				>
-					Player2
+				><Typography
+				sx={{
+					textTransform: 'uppercase',
+					fontWeight: 'bold',
+					fontSize: '20px',
+					align: 'left'
+				}}>
+				Player2
+			</Typography>
 				</Card>
 			</Box>
 			<Box textAlign='center' display={'flex'}>
 		<Button sx={{
 			marginTop: '20%',
 			marginRight: '85%',
-			marginLeft: '-80%',
+			marginLeft: '-60%',
 			marginBottom: '-20%',
 			height: '30%'
 		}}>Ready</Button>
 		<Button sx={{
 			marginTop: '20%',
-			marginLeft: '85%',
+			marginLeft: '70%',
 			marginBottom: '-20%',
 			height: '30%'
 		}}>Cancel</Button>
