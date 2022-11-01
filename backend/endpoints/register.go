@@ -15,4 +15,7 @@ func Register(router fiber.Router) {
 	// * RTC
 	rtc := router.Group("/rtc")
 	rtc.Post("/offer/sender", rtcEndpoint.SenderHandler)
+	rtc.Post("/offer/receiver", rtcEndpoint.ReceiverHandler)
+	rtc.Get("/snapshot/image", rtcEndpoint.SnapshotImageHandler)
+	rtc.Get("/snapshot/detail", rtcEndpoint.SnapshotDetailHandler)
 }

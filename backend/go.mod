@@ -8,8 +8,10 @@ require (
 	github.com/gofiber/fiber/v2 v2.38.1
 	github.com/pion/interceptor v0.1.12
 	github.com/pion/rtcp v1.2.10
+	github.com/pion/rtp v1.7.13
 	github.com/pion/webrtc/v3 v3.1.47
 	github.com/sirupsen/logrus v1.9.0
+	golang.org/x/image v0.1.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
@@ -26,7 +28,6 @@ require (
 	github.com/pion/logging v0.2.2 // indirect
 	github.com/pion/mdns v0.0.5 // indirect
 	github.com/pion/randutil v0.1.0 // indirect
-	github.com/pion/rtp v1.7.13 // indirect
 	github.com/pion/sctp v1.8.2 // indirect
 	github.com/pion/sdp/v3 v3.0.6 // indirect
 	github.com/pion/srtp/v2 v2.0.10 // indirect
@@ -40,5 +41,5 @@ require (
 	golang.org/x/crypto v0.0.0-20221010152910-d6f0a8c073c2 // indirect
 	golang.org/x/net v0.0.0-20221004154528-8021a29435af // indirect
 	golang.org/x/sys v0.0.0-20221010170243-090e33056c14 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.4.0 // indirect
 )

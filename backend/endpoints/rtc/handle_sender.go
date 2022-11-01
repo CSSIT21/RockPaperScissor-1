@@ -8,6 +8,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/pion/rtcp"
+	"github.com/pion/rtp"
 	"github.com/pion/webrtc/v3"
 
 	"backend/loaders/rtc"
@@ -29,6 +30,9 @@ func SenderHandler(c *fiber.Ctx) error {
 
 	if rtc.H.Rooms["test"].Sender != nil {
 		_ = rtc.H.Rooms["test"].Sender.Peer.Close()
+		return &response.Error{
+			Message: "Sender already exists",
+		}
 	}
 
 	// * Create session description
@@ -54,37 +58,50 @@ func SenderHandler(c *fiber.Ctx) error {
 
 	// * Local track channel
 	localTrackChan := make(chan *webrtc.TrackLocalStaticRTP)
+	rtpChan := make(chan *rtp.Packet)
 
-	peer.OnTrack(func(remoteTrack *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
+	peer.OnTrack(func(track *webrtc.TrackRemote, receiver *webrtc.RTPReceiver) {
 		// Send a PLI on an interval so that the publisher is pushing a keyframe every rtcpPLIInterval
 		// This can be less wasteful by processing incoming RTCP events, then we would emit a NACK/PLI when a viewer requests it
 		go func() {
 			ticker := time.NewTicker(rtc.RtcpPliInterval)
 			for range ticker.C {
-				if rtcpSendErr := peer.WriteRTCP([]rtcp.Packet{&rtcp.PictureLossIndication{MediaSSRC: uint32(remoteTrack.SSRC())}}); rtcpSendErr != nil {
+				if rtcpSendErr := peer.WriteRTCP([]rtcp.Packet{&rtcp.PictureLossIndication{MediaSSRC: uint32(track.SSRC())}}); rtcpSendErr != nil {
 					fmt.Println(rtcpSendErr)
 				}
 			}
 		}()
 
 		// Create a local track, all our SFU clients will be fed via this track
-		localTrack, newTrackErr := webrtc.NewTrackLocalStaticRTP(remoteTrack.Codec().RTPCodecCapability, "video", "pion")
+		localTrack, newTrackErr := webrtc.NewTrackLocalStaticRTP(track.Codec().RTPCodecCapability, "video", "pion")
 		if newTrackErr != nil {
 			panic(newTrackErr)
 		}
 
 		localTrackChan <- localTrack
 
-		rtpBuf := make([]byte, 1400)
 		for {
-			i, _, readErr := remoteTrack.Read(rtpBuf)
-			if readErr != nil {
-				panic(readErr)
+			// Read RTP Packets in a loop
+			rtpPacket, _, err := track.ReadRTP()
+			if err != nil {
+				panic(err)
+			}
+
+			rtpBuf, err := rtpPacket.Marshal()
+			if err != nil {
+				panic(err)
 			}
 
 			// ErrClosedPipe means we don't have any subscribers, this is ok if no peers have connected yet
-			if _, err = localTrack.Write(rtpBuf[:i]); err != nil && !errors.Is(err, io.ErrClosedPipe) {
+			if _, err = localTrack.Write(rtpBuf); err != nil && !errors.Is(err, io.ErrClosedPipe) {
 				panic(err)
+			}
+
+			// Use a lossy channel to send packets to snapshot handler
+			// We don't want to block and queue up old data
+			select {
+			case rtpChan <- rtpPacket:
+			default:
 			}
 		}
 	})
@@ -128,6 +145,7 @@ func SenderHandler(c *fiber.Ctx) error {
 		Peer:       peer,
 		Desc:       offer,
 		LocalTrack: nil,
+		RtpPacket:  rtpChan,
 	}
 
 	rtc.H.Rooms["test"].Sender = connection
