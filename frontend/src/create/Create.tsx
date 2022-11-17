@@ -3,6 +3,7 @@ import { Box, Card, Typography } from '@mui/material'
 
 import styles from './Create.module.scss'
 import Button from './_components/Button'
+
 const Create = () => {
 	return (
 		<div className={styles.home}>
