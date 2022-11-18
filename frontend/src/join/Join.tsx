@@ -3,8 +3,15 @@ import React from 'react'
 import styles from './Join.module.scss'
 import CodeField from './_components/CodeField'
 import JoinButton from './_components/Button'
+import { useNavigate } from 'react-router-dom'
 
 const Join = () => {
+	const navigate = useNavigate();
+	
+		const navigateToCreate = () => {
+			navigate('/create')
+		};
+
 	return (
 		<div className={styles.home}>
 			<Card sx={{
@@ -30,7 +37,7 @@ const Join = () => {
 				</Typography>
 			</Card>
 			<CodeField />
-			<Box textAlign='center' margin='5%'><JoinButton> Join room </JoinButton></Box>
+			<Box textAlign='center' margin='5%'><JoinButton onClick={navigateToCreate}> Join room </JoinButton></Box>
 		</div>
 	)
 }

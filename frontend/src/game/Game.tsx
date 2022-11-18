@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Card, Typography } from '@mui/material'
+import { Box, Card, Stack, Typography } from '@mui/material'
 
 import styles from './Game.module.scss'
 import Button from './_components/Button'
@@ -7,6 +7,7 @@ const Game = () => {
 	return (
 		<div className={styles.home}>
 			<Card
+			    
 				sx={{
 					width: '100%',
 					height: '10%',

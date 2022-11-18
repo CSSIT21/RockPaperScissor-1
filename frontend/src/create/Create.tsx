@@ -3,8 +3,15 @@ import { Box, Card, Typography } from '@mui/material'
 
 import styles from './Create.module.scss'
 import Button from './_components/Button'
+import { useNavigate } from 'react-router-dom'
 
 const Create = () => {
+	const navigate = useNavigate();
+	
+		const navigateToGame = () => {
+			navigate('/game')
+		}
+
 	return (
 		<div className={styles.home}>
 			<Card
