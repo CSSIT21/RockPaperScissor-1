@@ -2,7 +2,7 @@ import { Card, CardContent, CardMedia, Container, Stack, Typography } from "@mui
 import { alignProperty } from "@mui/material/styles/cssUtils";
 import { bgcolor, borderColor } from "@mui/system";
 import React, { Component } from "react";
-import RpsImage from '../../_assets/artwork/rps.png';
+import RpsImage from '../../_assets/artwork/newrps.png';
 
 const LogoCard = () => {
     return (
