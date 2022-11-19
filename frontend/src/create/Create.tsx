@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Card, Typography } from '@mui/material'
 
 import styles from './Create.module.scss'
@@ -11,6 +11,17 @@ const Create = () => {
 		const navigateToGame = () => {
 			navigate('/game')
 		}
+
+		const [buttonText1, setButtonText1] = useState('Ready');
+		const [buttonText2, setButtonText2] = useState('Ready');
+
+		function handleClickP1() {
+			setButtonText1('Cancel');
+		  }
+
+		function handleClickP2() {
+			setButtonText2('Cancel');
+		  }
 
 	return (
 		<div className={styles.home}>
@@ -111,19 +122,19 @@ const Create = () => {
 				</Card>
 			</Box>
 			<Box textAlign='center' display={'flex'}>
-		<Button sx={{
+		<Button onClick={handleClickP1} sx={{
 			marginTop: '20%',
 			marginRight: '85%',
 			marginLeft: '-60%',
 			marginBottom: '-20%',
 			height: '30%'
-		}}>Ready</Button>
-		<Button sx={{
+		}}>{buttonText1}</Button>
+		<Button onClick={handleClickP2} sx={{
 			marginTop: '20%',
 			marginLeft: '70%',
 			marginBottom: '-20%',
 			height: '30%'
-		}}>Cancel</Button>
+		}}>{buttonText2}</Button>
 		</Box>
 		</div>
 	)
