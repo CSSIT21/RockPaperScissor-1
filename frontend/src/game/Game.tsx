@@ -1,125 +1,90 @@
-import React from 'react'
-import { Box, Card, Stack, Typography } from '@mui/material'
+import React, { useEffect, useRef } from 'react';
+import { Box, Card, Stack, Typography } from '@mui/material';
+import Stat from '../_components/Stat';
 
-import styles from './Game.module.scss'
-import Button from './_components/Button'
+import styles from './Game.module.scss';
+import ImgVs from '../_assets/artwork/vs.png'
+
 const Game = () => {
+	const video = useRef<HTMLVideoElement>(null);
+	const video2 = useRef<HTMLVideoElement>(null);
+
+	const startCamera = () => {
+		const pc = new RTCPeerConnection({
+			iceServers: [
+				{
+					urls: 'stun:stun.l.google.com:19302',
+				},
+			],
+		});
+
+		navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+			.then((stream) => {
+				stream.getTracks().forEach(track => pc.addTrack(track, stream));
+				video.current!.srcObject = stream;
+				pc.createOffer()
+					.then(d => pc.setLocalDescription(d));
+			});
+	};
+
+	useEffect(() => {
+		startCamera();
+	}, []);
+
 	return (
 		<div className={styles.home}>
-			<Card
-			    
-				sx={{
-					width: '100%',
-					height: '10%',
-					borderRadius: '36px',
-					padding: '0 18px 0 36px',
-					display: 'flex',
-					alignItems: 'center',
-					marginY: '20%',
-					marginX: '0%',
-					borderColor: '#000000',
-					border: 'solid',
-					textAlign: 'center',
-				}}
-			>
-				<Typography
-                        sx={{
-                            textTransform: 'uppercase',
-                            fontWeight: 'bold',
-                            fontSize: '20px',
-                            align: 'left'
-                        }}>
-                        Room code : 8X7DF
-                    </Typography>
-			</Card>
-			<Box sx={{
-					width: '300%',
-					height: '200%',
-					borderRadius: '36px',
-					padding: '0 18px 0 36px',
-					display: 'flex',
-					marginTop: '-40%',
-					marginX: '-100%',
-					backgroundColor: 'white',
-					borderColor: '#000000',
-					border: 'solid',
-				}}>
+			<div className={styles.upperRow}>
 				<Card
 					sx={{
-						width: '350%',
-						height: '70%',
 						borderRadius: '36px',
-						padding: '0 18px 0 36px',
+						padding: '24px 48px',
+						alignItems: 'center',
 						borderColor: '#000000',
-						marginTop: '5%',
-						marginRight: '10%',
-						marginLeft: '1%',
 						border: 'solid',
 						textAlign: 'center',
 					}}
-				><Typography
-				sx={{
-					textTransform: 'uppercase',
-					fontWeight: 'bold',
-					fontSize: '20px',
-					align: 'left'
-				}}>
-				Player1
-			</Typography>
-					
+				>
+					<Typography
+						sx={{
+							textTransform: 'uppercase',
+							fontSize: '24px',
+						}}
+					>
+						Room code
+					</Typography>
+					<Typography
+						sx={{
+							textTransform: 'uppercase',
+							fontWeight: 'bold',
+							fontSize: '36px',
+							fontFamily: 'monospace',
+							letterSpacing: '0.5em',
+						}}
+					>
+						123456
+					</Typography>
 				</Card>
-				<Box
-        component="img"
-        sx={{
-			marginTop: '15%',
-          maxHeight: { xs: 233, md: 167 },
-          maxWidth: { xs: 350, md: 250 },
-        }}
-        alt="The house from the offer."
-        src="../../src/_assets/artwork/vs.png"
-      />
-				
-				<Card
-					sx={{
-						width: '350%',
-						height: '70%',
-						borderRadius: '36px',
-						padding: '0 18px 0 36px',
-						borderColor: '#000000',
-						marginLeft: '10%',
-						marginRight: '1%',
-						marginTop: '5%',
-						border: 'solid',
-						textAlign: 'center',
-					}}
-				><Typography
-				sx={{
-					textTransform: 'uppercase',
-					fontWeight: 'bold',
-					fontSize: '20px',
-					align: 'left'
-				}}>
-				Player2
-			</Typography>
-				</Card>
-			</Box>
-			<Box textAlign='center' display={'flex'}>
-		<Button sx={{
-			marginTop: '20%',
-			marginRight: '85%',
-			marginLeft: '-60%',
-			marginBottom: '-20%',
-			height: '30%'
-		}}>Ready</Button>
-		<Button sx={{
-			marginTop: '20%',
-			marginLeft: '70%',
-			marginBottom: '-20%',
-			height: '30%'
-		}}>Cancel</Button>
-		</Box>
+				<div className={styles.detail}>
+					<Stat />
+					<div className={styles.divider}></div>
+					<Stat />
+				</div>
+			</div>
+			<div className={styles.lowerRow}>
+				<Stack flex={1} justifyContent="center" alignItems="center">
+					<Typography>Player 1</Typography>
+					<Typography variant="h3" gutterBottom>Jack</Typography>
+					<video ref={video} width="480" height="360" autoPlay muted></video>
+				</Stack>
+				<img src={ImgVs} alt="versus" width={48} height={48} style={{alignSelf: 'center'}}/>
+				<Stack flex={1} justifyContent="center" alignItems="center">
+					<Typography>Player 1</Typography>
+					<Typography variant="h3" gutterBottom>Kainui</Typography>
+					<video ref={video2} width="480" height="360" autoPlay muted></video>
+				</Stack>
+			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Game
+export default Game;

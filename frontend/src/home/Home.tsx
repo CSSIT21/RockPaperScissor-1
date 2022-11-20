@@ -1,9 +1,8 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import React from 'react';
 import { axios, caller } from '../_utils/api';
-import NameField from './_components/NameField';
-import LogoCard from './_components/LogoCard';
-import StartButton from './_components/Button';
+import NameField from '../_components/NameField';
+import StartButton from '../_components/Button';
 import styles from './Home.module.scss';
 import Logo from '../_assets/artwork/logo.png';
 
@@ -35,6 +34,16 @@ const Home = () => {
 
 	const create = () => {
 		setMode('loading');
+		caller<any>(
+			axios.post(
+				`/player/create`,
+				{
+					name,
+				},
+			),
+		).then((res) => {
+			sessionStorage.setItem("token", res.data.token);
+		});
 	};
 
 	return (
@@ -59,7 +68,7 @@ const Home = () => {
 									Welcome, {name}!
 								</Typography>
 								<StartButton onClick={() => setMode('joining')}>Join Room By Code</StartButton>
-								<StartButton onClick={() => setMode('loading')}>Create Room</StartButton>
+								<StartButton onClick={create}>Create Room</StartButton>
 							</Box> :
 							mode === 'joining' ?
 								<Box width="100%" maxWidth="300px">

@@ -5,7 +5,10 @@ import (
 	"backend/types/extend"
 )
 
-var Hub = new(Model)
+var Hub = &Model{
+	RoomIncrement: 0,
+	Rooms:         make(map[uint64]*Room),
+}
 
 type Model struct {
 	RoomIncrement uint64           `json:"room_increment"`
