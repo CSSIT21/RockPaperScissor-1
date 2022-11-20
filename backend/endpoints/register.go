@@ -17,6 +17,7 @@ func Register(router fiber.Router) {
 	player := router.Group("/player")
 	player.Post("/create", playerEndpoint.CreateHandler)
 	player.Post("/join", playerEndpoint.JoinHandler)
+	player.Post("/ready", playerEndpoint.ReadyHandler)
 
 	// * RTC
 	rtc := router.Group("/rtc")

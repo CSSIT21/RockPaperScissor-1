@@ -36,8 +36,9 @@ func CreateHandler(c *fiber.Ctx) error {
 	hub.Hub.Room = append(hub.Hub.Room, room)
 
 	s := &payload.CreateResponse{
-		Name: body.Name,
-		Pin:  *pin,
+		Name:  body.Name,
+		Pin:   *pin,
+		Token: *token,
 	}
 
 	return c.JSON(s)

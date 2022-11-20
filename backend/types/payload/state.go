@@ -1,8 +1,9 @@
 package payload
 
 type CreateResponse struct {
-	Name string `json:"name"`
-	Pin  string `json:"pin"`
+	Name  string `json:"name"`
+	Pin   string `json:"pin"`
+	Token string `json:"token"`
 }
 
 type CreateRequest struct {
@@ -17,4 +18,9 @@ type JoinRequest struct {
 type JoinResponse struct {
 	Name         string `json:"name"`
 	OpponentName string `json:"opponent_name"`
+	Token        string `json:"token"`
+}
+
+type ReadyRequest struct {
+	Token string `json:"token"`
 }

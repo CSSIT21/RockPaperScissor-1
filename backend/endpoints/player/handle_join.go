@@ -39,5 +39,11 @@ func JoinHandler(c *fiber.Ctx) error {
 
 	room.Player2 = player
 
-	return c.JSON("Added")
+	s := &payload.JoinResponse{
+		Name:         body.Name,
+		Token:        *token,
+		OpponentName: room.Player1.Name,
+	}
+
+	return c.JSON(s)
 }
