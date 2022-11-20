@@ -1,5 +1,6 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { axios, caller } from '../_utils/api';
 import NameField from '../_components/NameField';
 import StartButton from '../_components/Button';
@@ -7,6 +8,7 @@ import styles from './Home.module.scss';
 import Logo from '../_assets/artwork/logo.png';
 
 const Home = () => {
+	const navigate = useNavigate();
 	const [mode, setMode] = React.useState<null | 'choosing' | 'joining' | 'loading'>(null);
 	const [name, setName] = React.useState<string | null>(null);
 	const [pin, setPin] = React.useState<string | null>(null);
@@ -28,7 +30,8 @@ const Home = () => {
 				},
 			),
 		).then((res) => {
-			sessionStorage.setItem("token", res.data.token);
+			sessionStorage.setItem('token', res.data.token);
+			navigate('/game', { state: { name: res.data.name, pin: res.data.pin } });
 		});
 	};
 
@@ -42,7 +45,8 @@ const Home = () => {
 				},
 			),
 		).then((res) => {
-			sessionStorage.setItem("token", res.data.token);
+			sessionStorage.setItem('token', res.data.token);
+			navigate('/game', { state: { name: res.data.name, pin: res.data.pin } });
 		});
 	};
 

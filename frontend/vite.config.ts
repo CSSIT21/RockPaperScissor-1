@@ -12,9 +12,9 @@ export default defineConfig({
 				changeOrigin: true,
 			},
 		},
-		https: {
-			key: fs.readFileSync('./res/key.pem'),
-			cert: fs.readFileSync('./res/cert.pem'),
-		},
+		// https: {
+		// 	key: fs.readFileSync('./res/key.pem'),
+		// 	cert: fs.readFileSync('./res/cert.pem'),
+		// },
 	},
 });
