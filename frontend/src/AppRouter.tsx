@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Create from './create/Create';
-import Finish from './finish/FInish';
+import Finish from './finish/Finish';
 import Game from './game/Game';
 import Home from './home/Home';
 import Join from './join/Join';

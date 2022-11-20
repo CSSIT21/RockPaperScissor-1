@@ -1,27 +1,31 @@
-import { IconButton, Paper, TextField } from '@mui/material'
-import React from 'react'
-import { FaChevronRight } from 'react-icons/all'
+import { IconButton, Paper, TextField } from '@mui/material';
+import React from 'react';
+import { FaChevronRight } from 'react-icons/all';
 
 const NameField = () => {
 	return (
 		<Paper
 			sx={{
-				width: '870px',
-				maxWidth: 'calc(100% - 54px - 48px)',
-				height: '100px',
+				width: 'calc(100% - 128px)',
+				height: '72px',
 				borderRadius: '36px',
 				padding: '0 20px 0 20px',
 				display: 'flex',
 				alignItems: 'center',
-				marginX: '100px',
-				borderColor: '#000000',
-                border: 'solid'
-			}}
-			elevation={3}
+			}} elevation={3}
 		>
-			<TextField variant="standard" label="Enter your name" sx={{ flex: 1 }}></TextField>
+			<TextField
+				label="Enter your name" variant="filled" InputProps={{
+				disableUnderline: true,
+				sx: {
+					'&, &:hover, &:active, &.MuiFocused': {
+						backgroundColor: 'white',
+					}
+				},
+			}} sx={{ flex: 1 }}
+			/>
 		</Paper>
-	)
-}
+	);
+};
 
-export default NameField
+export default NameField;

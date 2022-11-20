@@ -1,24 +1,21 @@
-import { Box } from '@mui/material'
+import { Box, Typography } from '@mui/material';
 import React from 'react'
 import NameField from './_components/NameField'
 import LogoCard from './_components/LogoCard'
 import StartButton from './_components/Button'
 import styles from './Home.module.scss'
-import { useNavigate } from 'react-router-dom'
-
+import Logo from '../_assets/artwork/logo.png'
 
 const Home = () => {
-		const navigate = useNavigate();
-	
-		const navigateToMode = () => {
-			navigate('/mode')
-		}
-
 	return (
 		<div className={styles.home}>
-			<LogoCard />
-			<NameField />
-			<Box textAlign='center' margin='5%'><StartButton onClick={navigateToMode}> Start </StartButton></Box>
+			<div className={styles.colLeft}></div>
+			<div className={styles.colRight}>
+				<img src={Logo} width="250px" className={styles.image} />
+				<Typography variant="h4" sx={{marginTop:4, marginBottom: 20, fontFamily: "Righteous"}}>RPS Online</Typography>
+				<NameField />
+				<StartButton>Start</StartButton>
+			</div>
 		</div>
 	)
 }
