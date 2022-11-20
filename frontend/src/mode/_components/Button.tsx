@@ -12,20 +12,20 @@ const CustomButton = styled(ButtonUnstyled)`
   font-family: IBM Plex Sans, sans-serif;
   font-weight: bold;
   font-size: 1.5rem;
-  background-color: ${red[500]};
+  background-image: linear-gradient(90deg, rgba(27, 135, 243, 1) 0%, rgba(35, 2, 75, 1) 100%);
   padding: 30px 70px;
   border-radius: 15px;
-  color: black;
+  color: white;
   transition: all 150ms ease;
   cursor: pointer;
   border: 5px;
 
   &:hover {
-    background-color: ${red[600]};
+    background-image: linear-gradient(90deg, rgba(27, 135, 243, 1) 0%, rgba(35, 2, 75, 1) 56%);
   }
 
   &.${buttonUnstyledClasses.active} {
-    background-color: ${red[700]};
+    background-image: linear-gradient(90deg, rgba(27, 135, 243, 1) 0%, rgba(35, 2, 75, 1) 100%);
   }
 
   &.${buttonUnstyledClasses.focusVisible} {

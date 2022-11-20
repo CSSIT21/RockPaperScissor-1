@@ -2,7 +2,7 @@ import { Card, CardContent, CardMedia, Container, Stack, Typography } from "@mui
 import { alignProperty } from "@mui/material/styles/cssUtils";
 import { bgcolor, borderColor } from "@mui/system";
 import React, { Component } from "react";
-import RpsImage from '../../_assets/artwork/rps.png'
+import RpsImage from '../../_assets/artwork/newrps.png'
 
 const LogoCard = () => {
     return (
@@ -15,7 +15,7 @@ const LogoCard = () => {
                 display: 'flex',
                 alignItems: 'center',
                 margin: '7.5%',
-                marginX: '20%',
+                marginX: '28%',
                 bgcolor: '#B0B0B0',
                 borderColor: '#000000',
                 border: 'solid'
