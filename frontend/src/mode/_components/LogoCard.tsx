@@ -14,8 +14,8 @@ const LogoCard = () => {
                 padding: '0 18px 0 36px',
                 display: 'flex',
                 alignItems: 'center',
-                margin: '7.5%',
-                marginX: '28%',
+                margin: '4%',
+                marginX: '22%',
                 bgcolor: '#B0B0B0',
                 borderColor: '#000000',
                 border: 'solid'
