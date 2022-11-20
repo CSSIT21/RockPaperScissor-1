@@ -1,5 +1,5 @@
 package payload
 
 type RtcSdpRequest struct {
-	Description string `json:"description"`
+	Description string `json:"description" validate:"required"`
 }

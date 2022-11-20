@@ -25,5 +25,4 @@ func RegisterInterceptor(i *interceptor.Registry, m *webrtc.MediaEngine) {
 	if err := webrtc.RegisterDefaultInterceptors(m, i); err != nil {
 		panic(err)
 	}
-
 }

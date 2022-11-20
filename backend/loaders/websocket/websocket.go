@@ -2,6 +2,7 @@ package websocket
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/websocket/v2"
 )
 
 func Init(router fiber.Router) {
@@ -17,6 +18,6 @@ func Init(router fiber.Router) {
 
 	// websocket.Conn bindings https://pkg.go.dev/github.com/fasthttp/websocket?tab=doc#pkg-index
 	router.Get("/socket", websocket.New(func(conn *websocket.Conn) {
-		ServeProjector(conn)
+		Serve(conn)
 	}))
 }

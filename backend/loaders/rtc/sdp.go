@@ -1,4 +1,4 @@
-package sdp
+package rtc
 
 import (
 	"bufio"

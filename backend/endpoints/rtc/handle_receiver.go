@@ -4,26 +4,31 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/pion/webrtc/v3"
 
+	"backend/loaders/hub"
 	"backend/loaders/rtc"
 	"backend/types/payload"
 	"backend/types/response"
-	"backend/utils/sdp"
 	"backend/utils/text"
 )
 
 func ReceiverHandler(c *fiber.Ctx) error {
+	// * Load local variables
+	player := c.Locals("player").(*hub.Player)
+
+	// * Parse body
 	var req *payload.RtcSdpRequest
 	if err := c.BodyParser(&req); err != nil {
 		return err
 	}
 
+	// * Validate body
 	if err := text.Validator.Struct(req); err != nil {
 		return err
 	}
 
 	// * Create session description
 	offer := webrtc.SessionDescription{}
-	sdp.Decode(req.Description, &offer)
+	rtc.Decode(req.Description, &offer)
 
 	// * Create peer connection
 	peer, err := webrtc.NewPeerConnection(*rtc.C)
@@ -35,13 +40,13 @@ func ReceiverHandler(c *fiber.Ctx) error {
 	}
 
 	// * Check local track channel
-	if rtc.H.Rooms["test"].Sender.LocalTrack == nil {
+	if player.RtcConn.LocalTrack == nil {
 		return &response.Error{
 			Message: "No local track",
 		}
 	}
 
-	rtpSender, err := peer.AddTrack(rtc.H.Rooms["test"].Sender.LocalTrack)
+	rtpSender, err := peer.AddTrack(player.Opponent.RtcConn.LocalTrack)
 	if err != nil {
 		return &response.Error{
 			Message: "Unable to add track",
@@ -93,6 +98,6 @@ func ReceiverHandler(c *fiber.Ctx) error {
 	<-gatherComplete
 
 	return c.JSON(response.New(map[string]any{
-		"answer": sdp.Encode(peer.LocalDescription()),
+		"answer": rtc.Encode(peer.LocalDescription()),
 	}))
 }

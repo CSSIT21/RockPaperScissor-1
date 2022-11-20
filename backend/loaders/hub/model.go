@@ -1,15 +1,15 @@
 package hub
 
 import (
-	"golang.org/x/net/websocket"
-
 	"backend/types/enum"
+	"backend/types/extend"
 )
 
 var Hub = new(Model)
 
 type Model struct {
-	Room []*Room `json:"room"`
+	RoomIncrement uint64           `json:"room_increment"`
+	Rooms         map[uint64]*Room `json:"rooms"`
 }
 
 type Room struct {
@@ -20,11 +20,13 @@ type Room struct {
 }
 
 type Player struct {
-	Name  string          `json:"name"`
-	Token string          `json:"token"`
-	Ready bool            `json:"ready"`
-	Room  *Room           `json:"-"`
-	Conn  *websocket.Conn `json:"-"`
+	Name     string                `json:"name"`
+	Token    string                `json:"token"`
+	Ready    bool                  `json:"ready"`
+	Room     *Room                 `json:"-"`
+	Opponent *Player               `json:"-"`
+	WsConn   *extend.WsConnection  `json:"-"`
+	RtcConn  *extend.RtcConnection `json:"-"`
 }
 
 type Rounds struct {

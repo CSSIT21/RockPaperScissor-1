@@ -11,14 +11,18 @@ import (
 	"github.com/pion/rtp"
 	"github.com/pion/webrtc/v3"
 
+	"backend/loaders/hub"
 	"backend/loaders/rtc"
+	"backend/types/extend"
 	"backend/types/payload"
 	"backend/types/response"
-	"backend/utils/sdp"
 	"backend/utils/text"
 )
 
 func SenderHandler(c *fiber.Ctx) error {
+	// * Load local variables
+	player := c.Locals("player").(*hub.Player)
+
 	var req *payload.RtcSdpRequest
 	if err := c.BodyParser(&req); err != nil {
 		return err
@@ -28,8 +32,8 @@ func SenderHandler(c *fiber.Ctx) error {
 		return err
 	}
 
-	if rtc.H.Rooms["test"].Sender != nil {
-		_ = rtc.H.Rooms["test"].Sender.Peer.Close()
+	if player.RtcConn.Peer != nil {
+		_ = player.RtcConn.Peer.Close()
 		return &response.Error{
 			Message: "Sender already exists",
 		}
@@ -37,7 +41,7 @@ func SenderHandler(c *fiber.Ctx) error {
 
 	// * Create session description
 	offer := webrtc.SessionDescription{}
-	sdp.Decode(req.Description, &offer)
+	rtc.Decode(req.Description, &offer)
 
 	// * Create peer connection
 	peer, err := webrtc.NewPeerConnection(*rtc.C)
@@ -101,7 +105,6 @@ func SenderHandler(c *fiber.Ctx) error {
 			// We don't want to block and queue up old data
 			select {
 			case rtpChan <- rtpPacket:
-			default:
 			}
 		}
 	})
@@ -141,20 +144,20 @@ func SenderHandler(c *fiber.Ctx) error {
 	<-gatherComplete
 
 	// * Save sender
-	connection := &rtc.Connection{
+	connection := &extend.RtcConnection{
 		Peer:       peer,
 		Desc:       offer,
 		LocalTrack: nil,
 		RtpPacket:  rtpChan,
 	}
 
-	rtc.H.Rooms["test"].Sender = connection
+	player.RtcConn = connection
 
 	go func() {
 		connection.LocalTrack = <-localTrackChan
 	}()
 
 	return c.JSON(response.New(map[string]any{
-		"answer": sdp.Encode(peer.LocalDescription()),
+		"answer": rtc.Encode(peer.LocalDescription()),
 	}))
 }

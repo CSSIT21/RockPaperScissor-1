@@ -3,6 +3,8 @@ import instance from 'axios';
 import { ApiError } from './interface';
 import type { InfoResponse } from './interface';
 
+export const backend = window.location.protocol + "//" + window.location.host + ":3000";
+
 export const axios: AxiosInstance = instance.create({
 	withCredentials: true, baseURL: '/api', validateStatus: () => true,
 });
