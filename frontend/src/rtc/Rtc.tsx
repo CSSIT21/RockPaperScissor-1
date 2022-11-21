@@ -1,9 +1,10 @@
 import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material';
 import React, { useRef, useState } from 'react';
-import { axios, caller } from '../_utils/api';
+import { caller, useAxios } from '../_utils/api';
 import GridImg from '../_assets/artwork/grid.svg';
 
 const Rtc = () => {
+	const axios = useAxios();
 	const [loading, setLoading] = useState(false);
 	const [snapshot, setSnapshot] = useState<null | string>(null);
 	const video = useRef<HTMLVideoElement>(null);
@@ -100,7 +101,9 @@ const Rtc = () => {
 				</> :
 				<>
 					<img src="https://macbookpro.lan.bsthun.com:3001/api/rtc/snapshot/image" />
-					<Typography><b>Result</b> {snapshot.split(" ")[4]}</Typography>
+					<Typography>
+						<b>Result</b>
+						{snapshot.split(' ')[4]}</Typography>
 					<Button onClick={() => snap()}> Retake</Button>
 				</>
 		}

@@ -19,9 +19,7 @@ var app *fiber.App
 func Init() {
 	// Initialize instance
 	app = fiber.New(fiber.Config{
-		ErrorHandler: func(ctx *fiber.Ctx, err error) error {
-			return ctx.Status(fiber.StatusInternalServerError).SendString(err.Error())
-		},
+		ErrorHandler:  errorHandler,
 		Prefork:       false,
 		StrictRouting: true,
 		ReadTimeout:   5 * time.Second,
@@ -40,12 +38,10 @@ func Init() {
 	websocket.Init(wsGroup)
 
 	// Initialize not found handler
-	app.Use(func(ctx *fiber.Ctx) error {
-		return ctx.Status(fiber.StatusNotFound).SendString("404_NOT_FOUND")
-	})
+	app.Use(notfoundHandler)
 
 	// Start listening
-	err := app.Listen(config.C.Address)
+	err := app.ListenTLS(config.C.Address, "../frontend/res/cert.pem", "../frontend/res/key.pem")
 	if err != nil {
 		logrus.Fatal(err.Error())
 	}

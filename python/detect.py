@@ -1,7 +1,8 @@
 import torch
+import sys
 
 model = torch.hub.load('ultralytics/yolov5', 'custom',
-                       path='/Volumes/Data/Forks/RockPaperScissor-1/python/best.pt')
-predictions = model("/tmp/images3432.jpeg")
+                       path='/Volumes/Data/Repos/RockPaperScissor-1/python/best.pt')
+predictions = model(sys.argv[1])
 
 print(predictions)

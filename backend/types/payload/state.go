@@ -1,26 +1,8 @@
 package payload
 
-type CreateResponse struct {
-	Name  string `json:"name"`
-	Pin   string `json:"pin"`
-	Token string `json:"token"`
-}
+import "backend/loaders/hub"
 
-type CreateRequest struct {
-	Name string `json:"name"`
-}
-
-type JoinRequest struct {
-	Name string `json:"name"`
-	Pin  string `json:"pin"`
-}
-
-type JoinResponse struct {
-	Name         string `json:"name"`
-	OpponentName string `json:"opponent_name"`
-	Token        string `json:"token"`
-}
-
-type ReadyRequest struct {
-	Token string `json:"token"`
+type StatePayload struct {
+	Me   int       `json:"me"`
+	Room *hub.Room `json:"room"`
 }

@@ -14,7 +14,7 @@ var Player = func() fiber.Handler {
 			if room.Player1 != nil && "Bearer "+room.Player1.Token == ctx.Get("Authorization") {
 				player = room.Player1
 			}
-			if room.Player2 != nil && "Bearer "+room.Player1.Token == ctx.Get("Authorization") {
+			if room.Player2 != nil && "Bearer "+room.Player2.Token == ctx.Get("Authorization") {
 				player = room.Player2
 			}
 		}

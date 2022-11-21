@@ -15,9 +15,9 @@ export type ErrorResponse = {
 export class ApiError extends Error {
 	public code: string;
 
-	constructor(message, code) {
+	constructor(message: string | undefined, code: string | undefined) {
 		super(message);
-		this.message = message;
-		this.code = code;
+		this.message = message ?? "";
+		this.code = code ?? "";
 	}
 }

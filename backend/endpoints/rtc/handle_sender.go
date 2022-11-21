@@ -13,7 +13,6 @@ import (
 
 	"backend/loaders/hub"
 	"backend/loaders/rtc"
-	"backend/types/extend"
 	"backend/types/payload"
 	"backend/types/response"
 	"backend/utils/text"
@@ -71,7 +70,7 @@ func SenderHandler(c *fiber.Ctx) error {
 			ticker := time.NewTicker(rtc.RtcpPliInterval)
 			for range ticker.C {
 				if rtcpSendErr := peer.WriteRTCP([]rtcp.Packet{&rtcp.PictureLossIndication{MediaSSRC: uint32(track.SSRC())}}); rtcpSendErr != nil {
-					fmt.Println(rtcpSendErr)
+					fmt.Println("TAG1", rtcpSendErr)
 				}
 			}
 		}()
@@ -103,8 +102,8 @@ func SenderHandler(c *fiber.Ctx) error {
 
 			// Use a lossy channel to send packets to snapshot handler
 			// We don't want to block and queue up old data
-			select {
-			case rtpChan <- rtpPacket:
+			if player.RtcConn.Capturing {
+				rtpChan <- rtpPacket
 			}
 		}
 	})
@@ -144,17 +143,13 @@ func SenderHandler(c *fiber.Ctx) error {
 	<-gatherComplete
 
 	// * Save sender
-	connection := &extend.RtcConnection{
-		Peer:       peer,
-		Desc:       offer,
-		LocalTrack: nil,
-		RtpPacket:  rtpChan,
-	}
-
-	player.RtcConn = connection
+	player.RtcConn.Peer = peer
+	player.RtcConn.Desc = offer
+	player.RtcConn.LocalTrack = nil
+	player.RtcConn.RtpPacket = rtpChan
 
 	go func() {
-		connection.LocalTrack = <-localTrackChan
+		player.RtcConn.LocalTrack = <-localTrackChan
 	}()
 
 	return c.JSON(response.New(map[string]any{

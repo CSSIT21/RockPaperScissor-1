@@ -40,7 +40,7 @@ func ReceiverHandler(c *fiber.Ctx) error {
 	}
 
 	// * Check local track channel
-	if player.RtcConn.LocalTrack == nil {
+	if player.Opponent.RtcConn.LocalTrack == nil {
 		return &response.Error{
 			Message: "No local track",
 		}

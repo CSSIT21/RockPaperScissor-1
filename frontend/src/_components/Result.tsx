@@ -10,16 +10,16 @@ const Result: React.FC<any> = ({ rps, wld }) => {
 			case 'rock':
 				return ImgRock;
 			case 'paper':
-				return ImgPaper;
-			case 'scissor':
 				return ImgScissor;
+			case 'scissor':
+				return ImgPaper;
 			default:
 				return null;
 		}
 	}, []);
 
 	return (
-		<Stack alignItems="center">
+		<Stack alignItems="center" mx={0.5}>
 			<img src={img} alt="rps" width="42px"/>
 			<Typography fontFamily="monospace">{wld}</Typography>
 		</Stack>

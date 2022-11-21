@@ -22,12 +22,12 @@ func Register(router fiber.Router) {
 
 	// * Game
 	game := router.Group("/game", middlewares.Player())
-	game.Post("/game", gameEndpoint.ReadyHandler)
+	game.Post("/ready", gameEndpoint.ReadyHandler)
+	game.Delete("/start", gameEndpoint.StartHandler)
 
 	// * RTC
 	rtc := router.Group("/rtc", middlewares.Player())
 	rtc.Post("/offer/sender", rtcEndpoint.SenderHandler)
 	rtc.Post("/offer/receiver", rtcEndpoint.ReceiverHandler)
 	rtc.Get("/snapshot/image", rtcEndpoint.SnapshotImageHandler)
-	rtc.Get("/snapshot/detail", rtcEndpoint.SnapshotDetailHandler)
 }

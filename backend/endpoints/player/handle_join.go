@@ -1,9 +1,14 @@
 package player
 
 import (
+	"sync"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/pion/webrtc/v3"
 
 	"backend/loaders/hub"
+	"backend/procedures"
+	"backend/types/extend"
 	"backend/types/payload"
 	"backend/types/response"
 	"backend/utils/text"
@@ -39,13 +44,23 @@ func JoinHandler(c *fiber.Ctx) error {
 		Ready:    false,
 		Opponent: room.Player1,
 		Room:     room,
-		WsConn:   nil,
-		RtcConn:  nil,
+		WsConn: &extend.WsConnection{
+			Conn:  nil,
+			Mutex: &sync.Mutex{},
+		},
+		RtcConn: &extend.RtcConnection{
+			Desc:       webrtc.SessionDescription{},
+			Peer:       nil,
+			LocalTrack: nil,
+			RtpPacket:  nil,
+		},
 	}
 
 	// * Assign player to room
 	room.Player2 = player
 	room.Player1.Opponent = player
+
+	room.Player1.WsConn.Emit(procedures.GetSocketPayload(room.Player1))
 
 	return c.JSON(response.New(&payload.JoinResponse{
 		Name:         body.Name,

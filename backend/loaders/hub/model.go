@@ -16,10 +16,11 @@ type Model struct {
 }
 
 type Room struct {
-	Pin     string    `json:"pin"`
-	Player1 *Player   `json:"player1"`
-	Player2 *Player   `json:"player2"`
-	Rounds  *[]Rounds `json:"rounds"`
+	Pin       string    `json:"pin"`
+	Countdown int       `json:"countdown"`
+	Player1   *Player   `json:"player1"`
+	Player2   *Player   `json:"player2"`
+	Rounds    []*Rounds `json:"rounds"`
 }
 
 type Player struct {
@@ -33,7 +34,7 @@ type Player struct {
 }
 
 type Rounds struct {
-	Player1Result *enum.Shape `json:"player1_result"`
-	Player2Result *enum.Shape `json:"player2_result"`
-	Winner        int         `json:"winner"`
+	Player1Result enum.Shape `json:"player1_result"`
+	Player2Result enum.Shape `json:"player2_result"`
+	Winner        int        `json:"winner"`
 }

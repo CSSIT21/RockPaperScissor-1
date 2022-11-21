@@ -17,7 +17,7 @@ func Init(router fiber.Router) {
 	})
 
 	// websocket.Conn bindings https://pkg.go.dev/github.com/fasthttp/websocket?tab=doc#pkg-index
-	router.Get("/socket", websocket.New(func(conn *websocket.Conn) {
+	router.Get("/game", websocket.New(func(conn *websocket.Conn) {
 		Serve(conn)
 	}))
 }

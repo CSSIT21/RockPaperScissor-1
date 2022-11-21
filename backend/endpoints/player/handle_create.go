@@ -1,9 +1,13 @@
 package player
 
 import (
+	"sync"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/pion/webrtc/v3"
 
 	"backend/loaders/hub"
+	"backend/types/extend"
 	"backend/types/response"
 	"backend/utils/text"
 
@@ -30,16 +34,25 @@ func CreateHandler(c *fiber.Ctx) error {
 		Ready:    false,
 		Room:     nil,
 		Opponent: nil,
-		WsConn:   nil,
-		RtcConn:  nil,
+		WsConn: &extend.WsConnection{
+			Conn:  nil,
+			Mutex: &sync.Mutex{},
+		},
+		RtcConn: &extend.RtcConnection{
+			Desc:       webrtc.SessionDescription{},
+			Peer:       nil,
+			LocalTrack: nil,
+			RtpPacket:  nil,
+		},
 	}
 
 	// * Create room instance
 	room := &hub.Room{
-		Pin:     *pin,
-		Player1: player,
-		Player2: nil,
-		Rounds:  nil,
+		Pin:       *pin,
+		Countdown: -1,
+		Player1:   player,
+		Player2:   nil,
+		Rounds:    nil,
 	}
 
 	// * Assign cycle pointer

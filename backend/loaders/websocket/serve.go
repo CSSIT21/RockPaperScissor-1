@@ -6,6 +6,7 @@ import (
 
 	"backend/loaders/hub"
 	"backend/loaders/websocket/message"
+	"backend/procedures"
 	"backend/utils/value"
 )
 
@@ -15,11 +16,9 @@ func Serve(c *websocket.Conn) {
 	for _, room := range hub.Hub.Rooms {
 		if room.Player1 != nil && room.Player1.Token == c.Query("token") {
 			player = room.Player1
-			return
 		}
-		if room.Player2 != nil && room.Player1.Token == c.Query("token") {
+		if room.Player2 != nil && room.Player2.Token == c.Query("token") {
 			player = room.Player2
-			return
 		}
 	}
 
@@ -37,7 +36,7 @@ func Serve(c *websocket.Conn) {
 	player.WsConn.Mutex.Unlock()
 
 	// * Initial emit
-	// TODO: Emit initial state
+	player.WsConn.Emit(procedures.GetSocketPayload(player))
 
 	// * Handle incoming messages
 	for {

@@ -10,4 +10,5 @@ type RtcConnection struct {
 	Peer       *webrtc.PeerConnection
 	LocalTrack *webrtc.TrackLocalStaticRTP
 	RtpPacket  chan *rtp.Packet
+	Capturing  bool
 }

@@ -3,10 +3,12 @@ import instance from 'axios';
 import { ApiError } from './interface';
 import type { InfoResponse } from './interface';
 
-export const backend = window.location.protocol + "//" + window.location.host + ":3000";
+export const backend = window.location.host.split(':')[0] + ':3000';
 
-export const axios: AxiosInstance = instance.create({
-	withCredentials: true, baseURL: '/api', validateStatus: () => true,
+export const useAxios = () => instance.create({
+	withCredentials: true,
+	baseURL: window.location.protocol + '//' + backend + '/api',
+	headers: { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') },
 });
 
 export const caller = function <T>(c: Promise<AxiosResponse<InfoResponse<T>>>): Promise<InfoResponse<T>> {
