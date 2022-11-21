@@ -19,6 +19,10 @@ import (
 )
 
 func Capture(player *hub.Player) *enum.Shape {
+	for len(player.RtcConn.RtpPacket) > 0 {
+		<-player.RtcConn.RtpPacket
+	}
+	println("Start capturing")
 	player.RtcConn.Capturing = true
 
 	// * Build channel

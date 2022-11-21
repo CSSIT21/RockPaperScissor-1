@@ -48,12 +48,13 @@ func StartHandler(c *fiber.Ctx) error {
 
 				<-finish
 				<-finish
+				winner := 0
 
 				if result1 == nil || result2 == nil {
-					break
+					player.Room.Countdown = -2
+					goto emit
 				}
 
-				winner := 0
 				if *result1 == enum.ShapePaper && *result2 == enum.ShapeRock {
 					winner = 1
 				}
@@ -79,6 +80,33 @@ func StartHandler(c *fiber.Ctx) error {
 					Winner:        winner,
 				})
 
+				if len(player.Room.Rounds) >= 3 {
+					go func() {
+						time.Sleep(3 * time.Second)
+						player1Score := 0
+						player2Score := 0
+						for _, round := range player.Room.Rounds {
+							if round.Winner == 1 {
+								player1Score++
+							}
+							if round.Winner == 2 {
+								player2Score++
+							}
+						}
+						if player1Score > player2Score {
+							player.Room.Winner = 1
+						}
+						if player1Score < player2Score {
+							player.Room.Winner = 2
+						}
+						player.Room.Player1.WsConn.Emit(procedures.GetSocketPayload(player.Room.Player1))
+						player.Room.Player2.WsConn.Emit(procedures.GetSocketPayload(player.Room.Player2))
+					}()
+				} else {
+					player.Room.Countdown = -2
+				}
+
+			emit:
 				player.Room.Player1.WsConn.Emit(procedures.GetSocketPayload(player.Room.Player1))
 				player.Room.Player2.WsConn.Emit(procedures.GetSocketPayload(player.Room.Player2))
 

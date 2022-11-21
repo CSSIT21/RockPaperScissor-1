@@ -29,6 +29,7 @@ func CreateHandler(c *fiber.Ctx) error {
 
 	// * Create player instance
 	player := &hub.Player{
+		No:       1,
 		Name:     body.Name,
 		Token:    *token,
 		Ready:    false,
@@ -49,10 +50,11 @@ func CreateHandler(c *fiber.Ctx) error {
 	// * Create room instance
 	room := &hub.Room{
 		Pin:       *pin,
-		Countdown: -1,
+		Countdown: -2,
 		Player1:   player,
 		Player2:   nil,
 		Rounds:    nil,
+		Winner:    0,
 	}
 
 	// * Assign cycle pointer

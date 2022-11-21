@@ -87,7 +87,7 @@ func SenderHandler(c *fiber.Ctx) error {
 			// Read RTP Packets in a loop
 			rtpPacket, _, err := track.ReadRTP()
 			if err != nil {
-				panic(err)
+				break
 			}
 
 			rtpBuf, err := rtpPacket.Marshal()

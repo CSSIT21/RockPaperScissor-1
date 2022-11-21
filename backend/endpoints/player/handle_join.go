@@ -39,6 +39,7 @@ func JoinHandler(c *fiber.Ctx) error {
 
 	// * Create player instance
 	player := &hub.Player{
+		No:       2,
 		Name:     body.Name,
 		Token:    *token,
 		Ready:    false,

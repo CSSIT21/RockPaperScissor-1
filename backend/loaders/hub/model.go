@@ -21,9 +21,11 @@ type Room struct {
 	Player1   *Player   `json:"player1"`
 	Player2   *Player   `json:"player2"`
 	Rounds    []*Rounds `json:"rounds"`
+	Winner    int       `json:"winner"`
 }
 
 type Player struct {
+	No       int                   `json:"no"`
 	Name     string                `json:"name"`
 	Token    string                `json:"token"`
 	Ready    bool                  `json:"ready"`

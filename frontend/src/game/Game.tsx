@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { Box, Button, Card, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, CircularProgress, Stack, Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
+import stat from '../_components/Stat';
 import { newPeerConnection } from '../_utils/rtc';
 import { backend, caller, useAxios } from '../_utils/api';
 import Stat from '../_components/Stat';
@@ -13,7 +14,7 @@ const Game = () => {
 	const [state, setState] = React.useState<any>({
 		me: 1,
 		room: {
-			countdown: -1,
+			countdown: -2,
 			pin: '000000',
 			player1: null,
 			player2: null,
@@ -41,7 +42,7 @@ const Game = () => {
 					axios.post(
 						`/rtc/offer/sender`,
 						{
-							description: btoa(JSON.stringify(pc.localDescription)),
+							description: window.btoa(JSON.stringify(pc.localDescription)),
 						},
 					),
 				).then((res) => {
@@ -155,46 +156,53 @@ const Game = () => {
 		<div className={styles.home}>
 			<div className={styles.upperRow}>
 				{
-					state.room.countdown == -1 ? (
-							<Stack gap={4}>
-								<Card
+					state.room.countdown == -2 ? (
+						<Stack gap={4}>
+							<Card
+								sx={{
+									borderRadius: '36px',
+									padding: '24px 48px',
+									alignItems: 'center',
+									borderColor: '#000000',
+									border: 'solid',
+									textAlign: 'center',
+								}}
+							>
+								<Typography
 									sx={{
-										borderRadius: '36px',
-										padding: '24px 48px',
-										alignItems: 'center',
-										borderColor: '#000000',
-										border: 'solid',
-										textAlign: 'center',
+										textTransform: 'uppercase',
+										fontSize: '24px',
 									}}
 								>
-									<Typography
-										sx={{
-											textTransform: 'uppercase',
-											fontSize: '24px',
-										}}
-									>
-										Room code
-									</Typography>
-									<Typography
-										sx={{
-											textTransform: 'uppercase',
-											fontWeight: 'bold',
-											fontSize: '36px',
-											fontFamily: 'monospace',
-											letterSpacing: '0.5em',
-										}}
-									>
-										{state.room.pin}
-									</Typography>
-								</Card>
-								<Button variant="outlined" onClick={startGame}>Start</Button>
-							</Stack>) :
-						<Typography variant="h1" align="center" minWidth="240px">{state.room.countdown}</Typography>
+									Room code
+								</Typography>
+								<Typography
+									sx={{
+										textTransform: 'uppercase',
+										fontWeight: 'bold',
+										fontSize: '36px',
+										fontFamily: 'monospace',
+										letterSpacing: '0.5em',
+									}}
+								>
+									{state.room.pin}
+								</Typography>
+							</Card>
+							<Button variant="outlined" onClick={startGame}>Start</Button>
+						</Stack>) : (
+						state.room.countdown == -1 ? (
+							<Stack alignItems="center" minWidth="240px">
+								<CircularProgress />
+							</Stack>
+						) : (
+							<Typography variant="h1" align="center" minWidth="240px">{state.room.countdown}</Typography>
+						)
+					)
 				}
 				<div className={styles.detail}>
-					<Stat no={1} player={state.player1} rounds={state.rounds} />
+					<Stat no={1} me={state.me} player={state.player1} rounds={state.rounds} />
 					<div className={styles.divider}></div>
-					<Stat no={2} player={state.player2} rounds={state.rounds} />
+					<Stat no={2} me={state.me} player={state.player2} rounds={state.rounds} />
 				</div>
 			</div>
 			<div className={styles.lowerRow}>
@@ -218,6 +226,17 @@ const Game = () => {
 					}
 				</Stack>
 			</div>
+			{
+				state.room.winner != 0 &&
+				<div className={styles.modal}>
+					<Typography
+						variant="h1" align="center" fontWeight={600} gutterBottom
+					>You {state.room?.winner == state.me ? 'wins' : 'lose'}</Typography>
+					<Typography variant="h3">{state.player1?.name} {state.room.winner == state.me ? 'wins' : 'lose'}</Typography>
+					<Typography variant="h3">{state.player2?.name} {state.room.winner != state.me ? 'wins' : 'lose'}</Typography>
+					<Button variant="outlined" sx={{marginTop: 6}} onClick={() => window.location.href = '/'}>Rematch</Button>
+				</div>
+			}
 		</div>
 	);
 };
